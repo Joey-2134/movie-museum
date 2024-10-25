@@ -12,6 +12,9 @@ export default function Layout() {
                         <Link to="/actors">Actors</Link>
                     </li>
                     <li>
+                        <Link to="/directors">Directors</Link>
+                    </li>
+                    <li>
                         <Link to="/movies">Movies</Link>
                     </li>
                 </ol>
