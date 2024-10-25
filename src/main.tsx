@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/index.css'
-import App from './components/App.tsx'
+import App from './pages/Index'
 import {QueryClientProvider, QueryClient} from "react-query";
 
 const queryClient = new QueryClient();
