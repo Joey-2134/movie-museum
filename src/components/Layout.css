@@ -1,0 +1,35 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: #FFBA08;
+}
+
+#navbar ul {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    list-style: none;
+}
+
+#navbar li {
+    margin: 0;
+    padding: 0 1em;
+}
+
+.link {
+    color: white;
+    font-weight: bolder;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4),
+    0px 8px 13px rgba(0,0,0,0.1),
+    0px 18px 23px rgba(0,0,0,0.1);
+}
