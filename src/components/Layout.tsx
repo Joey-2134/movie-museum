@@ -1,25 +1,24 @@
 import {Link, Outlet} from "react-router-dom";
-
+import './Layout.css';
 export default function Layout() {
     return (
         <>
-            <nav>
-                <ol>
+            <nav id="navbar">
+                <ul>
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link className="link" to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/actors">Actors</Link>
+                        <Link className="link" to="/actors">Actors</Link>
                     </li>
                     <li>
-                        <Link to="/directors">Directors</Link>
+                        <Link className="link" to="/directors">Directors</Link>
                     </li>
                     <li>
-                        <Link to="/movies">Movies</Link>
+                        <Link className="link" to="/movies">Movies</Link>
                     </li>
-                </ol>
+                </ul>
             </nav>
-
             <Outlet />
         </>
     )
