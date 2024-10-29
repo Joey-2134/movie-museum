@@ -17,6 +17,9 @@ export default function Layout() {
                     <li>
                         <Link className="link" to="/movies">Movies</Link>
                     </li>
+                    <li>
+                        <Link className="link" to="/genres">Genres</Link>
+                    </li>
                 </ul>
             </nav>
             <Outlet />

@@ -22,7 +22,7 @@ export type DirectorJSON = {
 }
 
 export type GenreJSON = {
-    name: string;
+    genreName: string;
     movies: MovieJSON[];
 }
 
