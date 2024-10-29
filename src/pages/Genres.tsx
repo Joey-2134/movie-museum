@@ -6,7 +6,7 @@ import './Tables.css'
 
 export default function Genres() {
       const { isLoading, error, data } = useQuery<GenreJSON[], Error>(
-      'actors',
+      'genres',
       fetchGenres
      )
     if (isLoading) return <div>Loading...</div>
@@ -22,20 +22,16 @@ export default function Genres() {
             <thead>
             <tr>
                 <th className="header">Name</th>
-                {/* <th className="header">Age</th> */}
             </tr>
             </thead>
             <tbody>
                 {data?.map((genre: GenreJSON) => (
                     <tr>
-                        <td>{genre.name}</td>
+                        <td>{genre.genreName}</td>
                     </tr>
                 ))}
             </tbody>
 
         </table>
-        //  <>
-       //
-       // </>
     )
 }

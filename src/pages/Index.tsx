@@ -4,6 +4,7 @@ import Home from "./Home.tsx";
 import Actors from "./Actors.tsx";
 import Directors from "./Directors.tsx";
 import Movies from "./Movies.tsx";
+import Genres from "./Genres.tsx";
 import NoPage from "./NoPage.tsx";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
                     <Route path="actors" element={<Actors />} />
                     <Route path="directors" element={<Directors />} />
                     <Route path="movies" element={<Movies />} />
+                    <Route path="genres" element={<Genres />} />
                     <Route path="*" element={<NoPage />} />
                 </Route>
             </Routes>
