@@ -2,7 +2,8 @@ import {useQuery} from "react-query";
 import {GenreJSON} from "../types/types.ts";
 import {fetchGenres} from "../api/genreRequests.ts";
 
-import './Tables.css'
+import '../styles/Tables.css'
+import Table from "../components/Table.tsx";
 
 export default function Genres() {
       const { isLoading, error, data } = useQuery<GenreJSON[], Error>(
@@ -18,20 +19,9 @@ export default function Genres() {
       }
 
     return (
-        <table className="tableContent">
-            <thead>
-            <tr>
-                <th className="header">Name</th>
-            </tr>
-            </thead>
-            <tbody>
-                {data?.map((genre: GenreJSON) => (
-                    <tr>
-                        <td>{genre.genreName}</td>
-                    </tr>
-                ))}
-            </tbody>
-
-        </table>
+        <Table<GenreJSON>
+            columns={["Genre Name"]}
+            data={data}>
+        </Table>
     )
 }

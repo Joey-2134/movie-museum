@@ -2,7 +2,8 @@ import {useQuery} from "react-query";
 import {MovieJSON} from "../types/types.ts";
 import {fetchMovies} from "../api/movieRequests.ts";
 
-import './Tables.css'
+import '../styles/Tables.css'
+import Table from "../components/Table.tsx";
 
 export default function Movies() {
     const { isLoading, error, data } = useQuery<MovieJSON[], Error>(
@@ -10,8 +11,6 @@ export default function Movies() {
         fetchMovies,
     )
 
-    const headerMovieNames = `header movieHeader`
-    const movieTitleHeader = `header movieTitle`
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
 
@@ -21,25 +20,9 @@ export default function Movies() {
     }
 
     return (
-        <div className={'container'}>
-            <table className="tableContent">
-                <thead>
-                <tr>
-                    <th className={movieTitleHeader}>Title</th>
-                    <th className={headerMovieNames}>Release Year</th>
-                    <th className={headerMovieNames}>IMDB Rating</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data?.map((movie: MovieJSON) => (
-                    <tr>
-                        <td>{movie.title}</td>
-                        <td>{movie.releaseYear}</td>
-                        <td>{movie.imdbRating}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+        <Table<MovieJSON>
+            columns={["Title", "Release Year", "IMDB Rating"]}
+            data={data}>
+        </Table>
     )
 }
