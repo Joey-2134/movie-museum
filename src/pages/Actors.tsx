@@ -5,10 +5,8 @@ import {fetchActors} from "../api/actorRequests.ts";
 import './Tables.css'
 
 export default function Actors() {
-      const { isLoading, error, data } = useQuery<ActorJSON[], Error>(
-      'actors',
-      fetchActors
-     )
+      const { isLoading, error, data } = useQuery<ActorJSON[], Error>('actors', fetchActors);
+
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
 
