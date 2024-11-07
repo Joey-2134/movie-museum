@@ -9,6 +9,10 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
         }
     }
 
+    const handleInputChange = (value: string) => {
+        console.log(value);
+    }
+
     return (
         <>
             <table className="tableContent">
@@ -33,7 +37,17 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                         </td>
                         {
                             Object.values(entry).slice(1).map((value: string | number, index: number) => (
-                                <td key={index}>{value}</td>
+                                <td key={index}>
+                                    {selectedRows.includes(entry.id as number) ? (
+                                        <input
+                                            type="text"
+                                            value={value}
+                                            onChange={(e) => handleInputChange(e.target.value)}
+                                        />
+                                    ) : (
+                                        value
+                                )}
+                                </td>
                             ))
                         }
                     </tr>
@@ -41,6 +55,7 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                 </tbody>
             </table>
             <button onClick={onDelete}>Delete</button>
+            <button onClick={() => console.log("Update Clicked")}>Update</button>
         </>
     )
 

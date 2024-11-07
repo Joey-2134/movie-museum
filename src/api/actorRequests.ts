@@ -14,10 +14,12 @@ export const postActor = async (actor: ActorJSON): Promise<ActorJSON> => {
     return response.data;
 }
 
-export const putActor = async (firstName: string, lastName: string, updatedActor: ActorJSON): Promise<ActorJSON> => {
-    const url = `${API_BASE_URL}actor/${firstName}/${lastName}`;
-    const response = await axios.put(url, updatedActor);
-    return response.data;
+export const putActors = async (firstName: string, lastName: string, actors: ActorJSON[]): Promise<void> => {
+    for (const actor of actors) {
+        console.log("Updating actor: " + actor.firstName + " " + actor.lastName);
+        const url = `${API_BASE_URL}actor/${firstName}/${lastName}`;
+        await axios.put(url, actor);
+    }
 };
 
 export const deleteActors = async (actors : ActorJSON[]): Promise<void> => {
