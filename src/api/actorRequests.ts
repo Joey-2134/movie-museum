@@ -20,7 +20,10 @@ export const putActor = async (firstName: string, lastName: string, updatedActor
     return response.data;
 };
 
-export const deleteActor = async (firstName: string, lastName: string): Promise<void> => {
-    const url = `${API_BASE_URL}actor/${firstName}/${lastName}`;
-    await axios.delete(url);
+export const deleteActors = async (actors : ActorJSON[]): Promise<void> => {
+    for (const actor of actors) {
+        console.log("Deleting actor: " + actor.firstName + " " + actor.lastName);
+        const url = `${API_BASE_URL}actor/${actor.firstName}/${actor.lastName}`;
+        await axios.delete(url);
+    }
 };
