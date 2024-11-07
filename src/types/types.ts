@@ -26,4 +26,7 @@ export type GenreJSON = {
     movies: MovieJSON[];
 }
 
-
+export type TableProps<T> = {
+    columns: string[];
+    data: T[];
+}
