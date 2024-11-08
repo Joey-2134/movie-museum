@@ -39,5 +39,7 @@ export type TableProps<T> = {
     data: T[],
     setSelectedIds?: (value: (((prevState: number[]) => number[]) | number[])) => void,
     selectedIds?: number[],
-    onDelete?: () => void
+    onDelete?: () => void,
+    setData?: (value: (((prevState: T[]) => T[]) | T[])) => void,
+    onUpdate?: () => void
 }
