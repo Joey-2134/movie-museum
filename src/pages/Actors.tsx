@@ -1,26 +1,43 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {ActorJSON} from "../types/types.ts";
-import {fetchActors} from "../api/actorRequests.ts";
+import {deleteActors, fetchActors} from "../api/actorRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
+import {useState} from "react";
 
 export default function Actors() {
-      const { isLoading, error, data } = useQuery<ActorJSON[], Error>('actors', fetchActors);
+
+    const queryClient = useQueryClient();
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const { isLoading, error, data } = useQuery<ActorJSON[], Error>('actors', fetchActors);
+
+    const deleteMutation = useMutation(deleteActors, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('actors');
+        }
+    });
+
+    const handleDelete = (selectedIds: number[]) => {
+        if (data) {
+            const actorsToDelete: ActorJSON[] = data.filter((actor: ActorJSON) =>
+                selectedIds.includes(actor.id as number)
+            );
+            deleteMutation.mutate(actorsToDelete);
+        }
+    };
 
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
-
-    if (data && data.length === 0) {
-        return <div>No actors found</div>;
-    }
+    if (data && data.length === 0) return <div>No actors found</div>
 
     return (
-        <>
-            <Table<ActorJSON>
-                columns={["First Name", "Last Name", "Age"]}
-                data={data}>
-            </Table>
-        </>
+        <Table<ActorJSON>
+            columns={["","First Name", "Last Name", "Age"]}
+            data={data || []}
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            onDelete={() => handleDelete(selectedIds)}>
+        </Table>
     )
 }

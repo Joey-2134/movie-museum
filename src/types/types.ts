@@ -1,4 +1,9 @@
+export interface Identifiable {
+    id: number | string;
+}
+
 export type ActorJSON = {
+    id: number;
     firstName: string;
     lastName: string;
     age: number;
@@ -6,6 +11,7 @@ export type ActorJSON = {
 }
 
 export type MovieJSON = {
+    id: number;
     title: string;
     releaseYear: number;
     imdbRating: number;
@@ -15,6 +21,7 @@ export type MovieJSON = {
 }
 
 export type DirectorJSON = {
+    id: number;
     firstName: string;
     lastName: string;
     age: number;
@@ -22,11 +29,15 @@ export type DirectorJSON = {
 }
 
 export type GenreJSON = {
+    id: number;
     genreName: string;
     movies: MovieJSON[];
 }
 
 export type TableProps<T> = {
-    columns: string[];
-    data: T[];
+    columns: string[],
+    data: T[],
+    setSelectedIds?: (value: (((prevState: number[]) => number[]) | number[])) => void,
+    selectedIds?: number[],
+    onDelete?: () => void
 }

@@ -14,13 +14,16 @@ export const postActor = async (actor: ActorJSON): Promise<ActorJSON> => {
     return response.data;
 }
 
-export const putActor = async (firstName: string, lastName: string, updatedActor: ActorJSON): Promise<ActorJSON> => {
-    const url = `${API_BASE_URL}actor/${firstName}/${lastName}`;
-    const response = await axios.put(url, updatedActor);
-    return response.data;
+export const putActors = async (id: number, actors: ActorJSON[]): Promise<void> => {
+
 };
 
-export const deleteActor = async (firstName: string, lastName: string): Promise<void> => {
-    const url = `${API_BASE_URL}actor/${firstName}/${lastName}`;
-    await axios.delete(url);
+
+//im making a new mapping in the backend to use ID instead of first and last name, this will stay functional for now
+export const deleteActors = async (actors : ActorJSON[]): Promise<void> => {
+    for (const actor of actors) {
+        console.log("Deleting actor: " + actor.firstName + " " + actor.lastName);
+        const url = `${API_BASE_URL}actor/${actor.firstName}/${actor.lastName}`;
+        await axios.delete(url);
+    }
 };
