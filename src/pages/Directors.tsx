@@ -19,8 +19,8 @@ export default function Directors() {
         <Table<DirectorJSON>
             columns={["First Name", "Last Name", "Age"]}
             data={data || []}
-            setSelectedRows={setSelectedRows}
-            selectedRows={selectedRows}>
+            setSelectedIds={setSelectedRows}
+            selectedIds={selectedRows}>
         </Table>
     )
 }

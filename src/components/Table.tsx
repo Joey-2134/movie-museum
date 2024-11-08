@@ -1,11 +1,11 @@
 import {Identifiable, TableProps} from "../types/types.ts";
 
-export default function Table<T extends Identifiable>({columns, data, setSelectedRows, selectedRows = [], onDelete}: TableProps<T>) {
+export default function Table<T extends Identifiable>({columns, data, setSelectedIds, selectedIds = [], onDelete}: TableProps<T>) {
     const handleCheckBoxChange = (id: number) => {
-        if (selectedRows.includes(id) && setSelectedRows) {
-            setSelectedRows(selectedRows.filter((row: number) => row !== id));
-        } else if (setSelectedRows) {
-            setSelectedRows([...selectedRows, id]);
+        if (selectedIds.includes(id) && setSelectedIds) {
+            setSelectedIds(selectedIds.filter((row: number) => row !== id));
+        } else if (setSelectedIds) {
+            setSelectedIds([...selectedIds, id]);
         }
     }
 
@@ -29,7 +29,7 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                         <td>
                             <input
                                 type="checkbox"
-                                checked={selectedRows.includes(entry.id as number)}
+                                checked={selectedIds.includes(entry.id as number)}
                                 onChange={() => {
                                     handleCheckBoxChange(entry.id as number)
                                 }}
@@ -38,7 +38,7 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                         {
                             Object.values(entry).slice(1).map((value: string | number, index: number) => (
                                 <td key={index}>
-                                    {selectedRows.includes(entry.id as number) ? (
+                                    {selectedIds.includes(entry.id as number) ? (
                                         <input
                                             type="text"
                                             value={value}

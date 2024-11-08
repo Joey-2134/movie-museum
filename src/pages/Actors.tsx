@@ -9,7 +9,7 @@ import {useState} from "react";
 export default function Actors() {
 
     const queryClient = useQueryClient();
-    const [selectedRows, setSelectedRows] = useState<number[]>([]);
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const { isLoading, error, data } = useQuery<ActorJSON[], Error>('actors', fetchActors);
 
     const deleteMutation = useMutation(deleteActors, {
@@ -18,10 +18,10 @@ export default function Actors() {
         }
     });
 
-    const handleDelete = (selectedRows: number[]) => {
+    const handleDelete = (selectedIds: number[]) => {
         if (data) {
             const actorsToDelete: ActorJSON[] = data.filter((actor: ActorJSON) =>
-                selectedRows.includes(actor.id as number)
+                selectedIds.includes(actor.id as number)
             );
             deleteMutation.mutate(actorsToDelete);
         }
@@ -35,9 +35,9 @@ export default function Actors() {
         <Table<ActorJSON>
             columns={["","First Name", "Last Name", "Age"]}
             data={data || []}
-            setSelectedRows={setSelectedRows}
-            selectedRows={selectedRows}
-            onDelete={() => handleDelete(selectedRows)}>
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            onDelete={() => handleDelete(selectedIds)}>
         </Table>
     )
 }

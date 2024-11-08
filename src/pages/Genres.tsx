@@ -19,8 +19,8 @@ export default function Genres() {
         <Table<GenreJSON>
             columns={["Genre Name"]}
             data={data || []}
-            setSelectedRows={setSelectedRows}
-            selectedRows={selectedRows}>
+            setSelectedIds={setSelectedRows}
+            selectedIds={selectedRows}>
         </Table>
     )
 }

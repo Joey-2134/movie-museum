@@ -37,7 +37,7 @@ export type GenreJSON = {
 export type TableProps<T> = {
     columns: string[],
     data: T[],
-    setSelectedRows?: (value: (((prevState: number[]) => number[]) | number[])) => void,
-    selectedRows?: number[],
+    setSelectedIds?: (value: (((prevState: number[]) => number[]) | number[])) => void,
+    selectedIds?: number[],
     onDelete?: () => void
 }

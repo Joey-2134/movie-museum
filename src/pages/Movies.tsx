@@ -19,8 +19,8 @@ export default function Movies() {
         <Table<MovieJSON>
             columns={["Title", "Release Year", "IMDB Rating"]}
             data={data || []}
-            setSelectedRows={setSelectedRows}
-            selectedRows={selectedRows}>
+            setSelectedIds={setSelectedRows}
+            selectedIds={selectedRows}>
         </Table>
     )
 }
