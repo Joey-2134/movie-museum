@@ -30,10 +30,7 @@ export default function Actors() {
     const handleDelete = (selectedIds: number[]) => {
         if (!data) return;
 
-        const actorsToDelete: ActorJSON[] = data.filter((actor: ActorJSON) =>
-            selectedIds.includes(actor.id as number)
-        );
-        deleteMutation.mutate(actorsToDelete);
+        deleteMutation.mutate(selectedIds);
     };
 
     const handleUpdate = (data: ActorJSON[]) => {

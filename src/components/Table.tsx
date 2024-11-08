@@ -1,6 +1,7 @@
 import {Identifiable, TableProps} from "../types/types.ts";
 
 export default function Table<T extends Identifiable>({columns, data, setData, setSelectedIds, selectedIds = [], onDelete, onUpdate}: TableProps<T>) {
+
     const handleCheckBoxChange = (id: number) => {
         if (selectedIds.includes(id) && setSelectedIds) {
             setSelectedIds(selectedIds.filter((row: number) => row !== id));
@@ -12,11 +13,10 @@ export default function Table<T extends Identifiable>({columns, data, setData, s
     const handleInputChange = (value: string, key: string, id: number) => {
         if (!data || !setData) return;
 
-        setData(
-            data.map((item) =>
-                item.id === id ? { ...item, [key]: value } : item
-            )
-        );
+        const itemIndex = data.findIndex((item) => item.id === id);
+        const updatedData = [...data];
+        updatedData[itemIndex] = {...updatedData[itemIndex], [key]: value};
+        setData(updatedData);
     };
 
     return (
