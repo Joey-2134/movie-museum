@@ -1,6 +1,6 @@
 import {Identifiable, TableProps} from "../types/types.ts";
 
-export default function Table<T extends Identifiable>({columns, data, setSelectedIds, selectedIds = [], onDelete}: TableProps<T>) {
+export default function Table<T extends Identifiable>({columns, data, setData, setSelectedIds, selectedIds = [], onDelete, onUpdate}: TableProps<T>) {
     const handleCheckBoxChange = (id: number) => {
         if (selectedIds.includes(id) && setSelectedIds) {
             setSelectedIds(selectedIds.filter((row: number) => row !== id));
@@ -9,9 +9,15 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
         }
     }
 
-    const handleInputChange = (value: string) => {
-        console.log(value);
-    }
+    const handleInputChange = (value: string, key: string, id: number) => {
+        if (!data || !setData) return;
+
+        setData(
+            data.map((item) =>
+                item.id === id ? { ...item, [key]: value } : item
+            )
+        );
+    };
 
     return (
         <>
@@ -36,13 +42,13 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                             />
                         </td>
                         {
-                            Object.values(entry).slice(1).map((value: string | number, index: number) => (
+                            Object.entries(entry).slice(1).map(([key,value], index: number) => (
                                 <td key={index}>
                                     {selectedIds.includes(entry.id as number) ? (
                                         <input
                                             type="text"
                                             value={value}
-                                            onChange={(e) => handleInputChange(e.target.value)}
+                                            onChange={(e) => handleInputChange(e.target.value, key, entry.id as number)}
                                         />
                                     ) : (
                                         value
@@ -55,7 +61,7 @@ export default function Table<T extends Identifiable>({columns, data, setSelecte
                 </tbody>
             </table>
             <button onClick={onDelete}>Delete</button>
-            <button onClick={() => console.log("Update Clicked")}>Update</button>
+            <button onClick={onUpdate}>Update</button>
         </>
     )
 

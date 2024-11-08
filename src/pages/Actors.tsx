@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {ActorJSON} from "../types/types.ts";
-import {deleteActors, fetchActors} from "../api/actorRequests.ts";
+import {deleteActors, fetchActors, putActors} from "../api/actorRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
@@ -10,7 +10,10 @@ export default function Actors() {
 
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const { isLoading, error, data } = useQuery<ActorJSON[], Error>('actors', fetchActors);
+    const [data, setData] = useState<ActorJSON[]>([]);
+    const { isLoading, error } = useQuery<ActorJSON[], Error>('actors', fetchActors, {
+        onSuccess: (data) => setData(data)
+    });
 
     const deleteMutation = useMutation(deleteActors, {
         onSuccess: () => {
@@ -18,14 +21,30 @@ export default function Actors() {
         }
     });
 
-    const handleDelete = (selectedIds: number[]) => {
-        if (data) {
-            const actorsToDelete: ActorJSON[] = data.filter((actor: ActorJSON) =>
-                selectedIds.includes(actor.id as number)
-            );
-            deleteMutation.mutate(actorsToDelete);
+    const updateMutation = useMutation(putActors, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('actors');
         }
+    });
+
+    const handleDelete = (selectedIds: number[]) => {
+        if (!data) return;
+
+        const actorsToDelete: ActorJSON[] = data.filter((actor: ActorJSON) =>
+            selectedIds.includes(actor.id as number)
+        );
+        deleteMutation.mutate(actorsToDelete);
     };
+
+    const handleUpdate = (data: ActorJSON[]) => {
+        if (!data) return;
+
+        const actorsToUpdate: ActorJSON[] = data.filter((actor: ActorJSON) =>
+            selectedIds.includes(actor.id as number)
+        );
+        updateMutation.mutate(actorsToUpdate);
+        setSelectedIds([]);
+    }
 
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
@@ -35,9 +54,11 @@ export default function Actors() {
         <Table<ActorJSON>
             columns={["","First Name", "Last Name", "Age"]}
             data={data || []}
+            setData={setData}
             setSelectedIds={setSelectedIds}
             selectedIds={selectedIds}
-            onDelete={() => handleDelete(selectedIds)}>
+            onDelete={() => handleDelete(selectedIds)}
+            onUpdate={() => handleUpdate(data)}>
         </Table>
     )
 }

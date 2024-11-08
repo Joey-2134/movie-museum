@@ -14,8 +14,10 @@ export const postActor = async (actor: ActorJSON): Promise<ActorJSON> => {
     return response.data;
 }
 
-export const putActors = async (id: number, actors: ActorJSON[]): Promise<void> => {
-
+export const putActors = async (actors: ActorJSON[]): Promise<void> => {
+    console.log("Updating actors: " + actors);
+    const url = `${API_BASE_URL}actors/put`;
+    await axios.put(url, actors);
 };
 
 
