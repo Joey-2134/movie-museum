@@ -1,6 +1,6 @@
 import {useQuery} from "react-query";
 import {ActorJSON} from "../types/types.ts";
-import {fetchActors} from "../api/actorRequests.ts";
+import {deleteActor, fetchActors, postActor, putActor} from "../api/actorRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
@@ -19,7 +19,10 @@ export default function Actors() {
         <>
             <Table<ActorJSON>
                 columns={["First Name", "Last Name", "Age"]}
-                data={data}>
+                data={data}
+                onCreate={postActor}
+                onEdit={putActor}
+                onDelete={deleteActor}>
             </Table>
         </>
     )

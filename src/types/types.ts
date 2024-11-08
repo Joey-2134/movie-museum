@@ -29,4 +29,7 @@ export type GenreJSON = {
 export type TableProps<T> = {
     columns: string[];
     data: T[];
+    // onCreate: (newData: T) => void;    // Function for creating a new entity
+    // onEdit: (updatedData: T) => void;  // Function for editing an entity
+    onDelete: (firstName: string, lastName: string) => Promise<void>;
 }
