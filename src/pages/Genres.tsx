@@ -74,7 +74,7 @@ export default function Genres() {
 
     return (
         <Table<GenreJSON>
-            columns={["","First Name", "Last Name", "Age"]}
+            columns={["", "Genre Name"]}
             data={data || []}
             setData={setData}
             createData={createData}
