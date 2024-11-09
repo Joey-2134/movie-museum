@@ -12,20 +12,15 @@ export default function Movies() {
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<MovieJSON[]>([]);
     const [createData, setCreateData] = useState<MovieJSON>({
-            id: 0,
-            title: "",
-            releaseYear: 0,
-            imdbRating: 0,
-            actors: [],
-            director: {
-                id: 0,
-                firstName: "",
-                lastName: "",
-                age: 0,
-                movies: []
-            },
-            genres: []
+        id: 0,
+        title: "",
+        releaseYear: 0,
+        imdbRating: 0,
+        actors: [],
+        director: { id: 0, firstName: "", lastName: "", age: 0, movies: [] },
+        genres: []
     });
+
 
     const { isLoading, error } = useQuery<MovieJSON[], Error>('movies', fetchMovies, {
        onSuccess: (data) => setData(data)
