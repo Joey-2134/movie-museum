@@ -28,7 +28,7 @@ export default function Actors() {
     });
 
     const handleDelete = (selectedIds: number[]) => {
-        if (!data) return;
+        if (!selectedIds) return;
 
         deleteMutation.mutate(selectedIds);
     };
@@ -41,7 +41,7 @@ export default function Actors() {
         );
         updateMutation.mutate(actorsToUpdate);
         setSelectedIds([]);
-    }
+    };
 
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>

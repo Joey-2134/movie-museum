@@ -1,6 +1,6 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {DirectorJSON} from "../types/types.ts";
-import {fetchDirectors} from "../api/directorRequests.ts";
+import {deleteDirectors, fetchDirectors, putDirectors} from "../api/directorRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
@@ -8,8 +8,40 @@ import {useState} from "react";
 
 export default function Directors() {
 
-    const [selectedRows, setSelectedRows] = useState<number[]>([]);
-    const { isLoading, error, data } = useQuery<DirectorJSON[], Error>('directors', fetchDirectors)
+    const queryClient = useQueryClient();
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [data, setData] = useState<DirectorJSON[]>([]);
+    const { isLoading, error } = useQuery<DirectorJSON[], Error>('directors', fetchDirectors, {
+       onSuccess: (data) => setData(data),
+    });
+
+    const deleteMutation = useMutation(deleteDirectors, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('directors');
+        }
+    });
+
+    const updateMutation = useMutation(putDirectors, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('directors');
+        }
+    });
+
+    const handleDelete = (selectedIds: number[]) => {
+        if (!selectedIds) return;
+
+        deleteMutation.mutate(selectedIds);
+    };
+
+    const handleUpdate = (data: DirectorJSON[]) => {
+        if (!data) return;
+
+        const directorsToUpdate: DirectorJSON[] = data.filter((director: DirectorJSON)=>
+            selectedIds.includes(director.id as number)
+        );
+        updateMutation.mutate(directorsToUpdate);
+        setSelectedIds([]);
+    };
 
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
@@ -17,10 +49,13 @@ export default function Directors() {
 
     return (
         <Table<DirectorJSON>
-            columns={["First Name", "Last Name", "Age"]}
+            columns={["", "First Name", "Last Name", "Age"]}
             data={data || []}
-            setSelectedIds={setSelectedRows}
-            selectedIds={selectedRows}>
+            setData={setData}
+            setSelectedIds={setSelectedIds}
+            selectedIds={selectedIds}
+            onDelete={() => handleDelete(selectedIds)}
+            onUpdate={() => handleUpdate(data)}>
         </Table>
     )
 }

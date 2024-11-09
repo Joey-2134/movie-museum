@@ -7,3 +7,21 @@ export const fetchMovies = async (): Promise<MovieJSON[]> => {
     const response = await axios.get(API_BASE_URL + 'movies');
     return response.data;
 }
+
+export const postMovie = async (movie: MovieJSON): Promise<MovieJSON> => {
+    const url = `${API_BASE_URL}` + "movies";
+    const response = await axios.post(url, movie);
+    return response.data;
+}
+
+export const putMovies = async (movies: MovieJSON[]): Promise<void> => {
+    console.log("Updating movies: " + movies);
+    const url = `${API_BASE_URL}movies/put`;
+    await axios.put(url, movies);
+}
+
+export const deleteMovies = async (ids: number[]): Promise<void> => {
+    console.log("Deleting selected Movies");
+    const url = `${API_BASE_URL}movies/delete`;
+    await axios.delete(url, {data: ids});
+}
