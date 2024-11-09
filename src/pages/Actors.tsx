@@ -43,7 +43,7 @@ export default function Actors() {
     });
 
     const handleDelete = (selectedIds: number[]) => {
-        if (!data) return;
+        if (!selectedIds) return;
 
         deleteMutation.mutate(selectedIds);
     };
@@ -56,7 +56,7 @@ export default function Actors() {
         );
         updateMutation.mutate(actorsToUpdate);
         setSelectedIds([]);
-    }
+    };
 
     const handleSubmit = (createData: ActorJSON) => {
         if (!createData) return;
