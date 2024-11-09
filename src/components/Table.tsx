@@ -66,7 +66,7 @@ export default function Table<T extends Identifiable>({columns, data, setData, c
                 <tr key={"createRow"}>
                     <td></td>
                     {
-                        Object.entries(createData).slice(1, Object.entries(createData).length-1).map(([key, value], index: number) => (
+                        Object.entries(createData || {}).slice(1, Object.entries(createData || {}).length-1).map(([key, value], index: number) => (
                             <td key={index}>
                                 <input
                                     type="text"
