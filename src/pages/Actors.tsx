@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {ActorJSON} from "../types/types.ts";
-import {deleteActors, fetchActors, putActors} from "../api/actorRequests.ts";
+import {deleteActors, fetchActors, postActor, putActors} from "../api/actorRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
@@ -11,6 +11,15 @@ export default function Actors() {
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<ActorJSON[]>([]);
+    const [createData, setCreateData] = useState<ActorJSON>(
+        {
+            id: 0,
+            firstName: "",
+            lastName: "",
+            age: 0,
+            movies: []
+        }
+    );
     const { isLoading, error } = useQuery<ActorJSON[], Error>('actors', fetchActors, {
         onSuccess: (data) => setData(data)
     });
@@ -22,6 +31,12 @@ export default function Actors() {
     });
 
     const updateMutation = useMutation(putActors, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('actors');
+        }
+    });
+
+    const submitMutation = useMutation(postActor, {
         onSuccess: () => {
             queryClient.invalidateQueries('actors');
         }
@@ -43,6 +58,19 @@ export default function Actors() {
         setSelectedIds([]);
     }
 
+    const handleSubmit = (createData: ActorJSON) => {
+        if (!createData) return;
+
+        submitMutation.mutate(createData);
+        setCreateData({
+            id: 0,
+            firstName: "",
+            lastName: "",
+            age: 0,
+            movies: []
+        })
+    }
+
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
     if (data && data.length === 0) return <div>No actors found</div>
@@ -52,10 +80,13 @@ export default function Actors() {
             columns={["","First Name", "Last Name", "Age"]}
             data={data || []}
             setData={setData}
+            createData={createData}
+            setCreateData={setCreateData}
             setSelectedIds={setSelectedIds}
             selectedIds={selectedIds}
             onDelete={() => handleDelete(selectedIds)}
-            onUpdate={() => handleUpdate(data)}>
+            onUpdate={() => handleUpdate(data)}
+            onSubmit={() => handleSubmit(createData)}>
         </Table>
     )
 }

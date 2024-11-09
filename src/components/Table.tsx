@@ -1,6 +1,6 @@
 import {Identifiable, TableProps} from "../types/types.ts";
 
-export default function Table<T extends Identifiable>({columns, data, setData, setSelectedIds, selectedIds = [], onDelete, onUpdate}: TableProps<T>) {
+export default function Table<T extends Identifiable>({columns, data, setData, createData, setCreateData, setSelectedIds, selectedIds = [], onDelete, onUpdate, onSubmit}: TableProps<T>) {
 
     const handleCheckBoxChange = (id: number) => {
         if (selectedIds.includes(id) && setSelectedIds) {
@@ -19,15 +19,20 @@ export default function Table<T extends Identifiable>({columns, data, setData, s
         setData(updatedData);
     };
 
+    const handleCreateInputChange = (value: string, key: string) => {
+        if (!createData || !setCreateData) return;
+        setCreateData({...createData, [key]: value});
+    }
+
     return (
         <>
             <table className="tableContent">
                 <thead>
-                <tr>
-                    {columns.map((column: string, index: number) => (
-                        <th className="header" key={index}>{column}</th>
-                    ))}
-                </tr>
+                    <tr>
+                        {columns.map((column: string, index: number) => (
+                            <th className="header" key={index}>{column}</th>
+                        ))}
+                    </tr>
                 </thead>
                 <tbody>
                 {data.map(entry => (
@@ -58,10 +63,25 @@ export default function Table<T extends Identifiable>({columns, data, setData, s
                         }
                     </tr>
                 ))}
+                <tr key={"createRow"}>
+                    <td></td>
+                    {
+                        Object.entries(createData).slice(1, Object.entries(createData).length-1).map(([key, value], index: number) => (
+                            <td key={index}>
+                                <input
+                                    type="text"
+                                    value={value}
+                                    onChange={(e) => handleCreateInputChange(e.target.value, key)}
+                                />
+                            </td>
+                        ))
+                    }
+                </tr>
                 </tbody>
             </table>
             <button onClick={onDelete}>Delete</button>
             <button onClick={onUpdate}>Update</button>
+            <button onClick={onSubmit}>Submit</button>
         </>
     )
 

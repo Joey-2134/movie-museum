@@ -9,7 +9,8 @@ export const fetchActors = async (): Promise<ActorJSON[]> => {
 }
 
 export const postActor = async (actor: ActorJSON): Promise<ActorJSON> => {
-    const url = `${API_BASE_URL}` + "actors";
+    console.log("Posting actor: " + actor);
+    const url = `${API_BASE_URL}` + "actor/post";
     const response = await axios.post(url, actor);
     return response.data;
 }
