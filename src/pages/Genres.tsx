@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {GenreJSON} from "../types/types.ts";
-import {deleteGenres, fetchGenres, putGenres} from "../api/genreRequests.ts";
+import {deleteGenres, fetchGenres, postGenre, putGenres} from "../api/genreRequests.ts";
 
 import '../styles/Tables.css'
 import Table from "../components/Table.tsx";
@@ -11,6 +11,13 @@ export default function Genres() {
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<GenreJSON[]>([]);
+    const [createData, setCreateData] = useState<GenreJSON>({
+        id: 0,
+        genreName: "",
+        movies: []
+    });
+
+
     const { isLoading, error } = useQuery<GenreJSON[], Error>('genres', fetchGenres, {
        onSuccess: (data) => setData(data)
     });
@@ -43,6 +50,24 @@ export default function Genres() {
         setSelectedIds([]);
     };
 
+    const submitMutation = useMutation(postGenre, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('genres');
+        }
+    });
+
+    const handleSubmit = (createData: GenreJSON) => {
+        if (!createData) return;
+
+        submitMutation.mutate(createData);
+        setCreateData({
+            id: 0,
+            genreName: "",
+            movies: []
+        });
+    };
+
+
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
     if (data && data.length === 0) return <div>No genres found</div>
@@ -52,10 +77,13 @@ export default function Genres() {
             columns={["", "Genre Name"]}
             data={data || []}
             setData={setData}
+            createData={createData}
+            setCreateData={setCreateData}
             setSelectedIds={setSelectedIds}
             selectedIds={selectedIds}
             onDelete={() => handleDelete(selectedIds)}
-            onUpdate={() => handleUpdate(data)}>
+            onUpdate={() => handleUpdate(data)}
+            onSubmit={() => handleSubmit(createData)}>
         </Table>
     )
 }
