@@ -65,18 +65,17 @@ export default function Table<T extends Identifiable>({columns, data, setData, c
                 ))}
                 <tr key={"createRow"}>
                     <td></td>
-                    {
-                        Object.entries(createData || {}).slice(1, Object.entries(createData || {}).length-1).map(([key, value], index: number) => (
-                            <td key={index}>
-                                <input
-                                    type="text"
-                                    value={value}
-                                    onChange={(e) => handleCreateInputChange(e.target.value, key)}
-                                />
-                            </td>
-                        ))
-                    }
+                    {columns.slice(1).map((column, index) => (
+                        <td key={index}>
+                            <input
+                                type="text"
+                                value={createData?.[column] || ''}
+                                onChange={(e) => handleCreateInputChange(e.target.value, column)}
+                            />
+                        </td>
+                    ))}
                 </tr>
+
                 </tbody>
             </table>
             <button onClick={onDelete}>Delete</button>
