@@ -9,7 +9,7 @@ export const fetchGenres = async (): Promise<GenreJSON[]> => {
 }
 
 export const postGenre = async (genre: GenreJSON): Promise<GenreJSON> => {
-    const url = `${API_BASE_URL}` + "genres";
+    const url = `${API_BASE_URL}` + "genre/post";
     const response = await axios.post(url, genre);
     return response.data;
 }

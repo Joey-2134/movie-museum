@@ -9,7 +9,7 @@ export const fetchMovies = async (): Promise<MovieJSON[]> => {
 }
 
 export const postMovie = async (movie: MovieJSON): Promise<MovieJSON> => {
-    const url = `${API_BASE_URL}` + "movies";
+    const url = `${API_BASE_URL}` + "movie/post";
     const response = await axios.post(url, movie);
     return response.data;
 }

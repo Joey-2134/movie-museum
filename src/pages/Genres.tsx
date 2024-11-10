@@ -34,6 +34,12 @@ export default function Genres() {
         }
     });
 
+    const submitMutation = useMutation(postGenre, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('genres');
+        }
+    });
+
     const handleDelete = (selectedIds: number[]) => {
         if (!selectedIds) return;
 
@@ -49,12 +55,6 @@ export default function Genres() {
         updateMutation.mutate(genresToUpdate);
         setSelectedIds([]);
     };
-
-    const submitMutation = useMutation(postGenre, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('genres');
-        }
-    });
 
     const handleSubmit = (createData: GenreJSON) => {
         if (!createData) return;
