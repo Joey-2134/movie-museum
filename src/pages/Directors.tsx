@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {ActorJSON, DirectorJSON} from "../types/types.ts";
+import {DirectorJSON} from "../types/types.ts";
 import {deleteDirectors, fetchDirectors, postDirector, putDirectors} from "../api/directorRequests.ts";
 
 import '../styles/Tables.css'
@@ -11,7 +11,7 @@ export default function Directors() {
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<DirectorJSON[]>([]);
-    const [createData, setCreateData] = useState<ActorJSON>(
+    const [createData, setCreateData] = useState<DirectorJSON>(
         {
             id: 0,
             firstName: "",

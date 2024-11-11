@@ -17,7 +17,13 @@ export default function Movies() {
         releaseYear: 0,
         imdbRating: 0,
         actors: [],
-        director: { id: 0, firstName: "", lastName: "", age: 0, movies: [] },
+        director: {
+            id: 0,
+            firstName: "",
+            lastName: "",
+            age: 0,
+            movies: []
+        },
         genres: []
     });
 
@@ -33,6 +39,12 @@ export default function Movies() {
     });
 
     const updateMutation = useMutation(putMovies, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('movies');
+        }
+    });
+
+    const submitMutation = useMutation(postMovie, {
         onSuccess: () => {
             queryClient.invalidateQueries('movies');
         }
@@ -54,12 +66,6 @@ export default function Movies() {
         updateMutation.mutate(moviesToUpdate);
         setSelectedIds([]);
     }
-
-    const submitMutation = useMutation(postMovie, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('directors');
-        }
-    });
 
     const handleSubmit = (createData: MovieJSON) => {
         if (!createData) return;
