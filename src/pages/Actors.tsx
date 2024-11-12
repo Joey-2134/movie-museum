@@ -27,12 +27,14 @@ export default function Actors() {
     const deleteMutation = useMutation(deleteActors, {
         onSuccess: () => {
             queryClient.invalidateQueries('actors');
+            setSelectedIds([]);
         }
     });
 
     const updateMutation = useMutation(putActors, {
         onSuccess: () => {
             queryClient.invalidateQueries('actors');
+            setSelectedIds([]);
         }
     });
 
