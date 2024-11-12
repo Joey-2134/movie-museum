@@ -27,12 +27,14 @@ export default function Directors() {
     const deleteMutation = useMutation(deleteDirectors, {
         onSuccess: () => {
             queryClient.invalidateQueries('directors');
+            setSelectedIds([]);
         }
     });
 
     const updateMutation = useMutation(putDirectors, {
         onSuccess: () => {
             queryClient.invalidateQueries('directors');
+            setSelectedIds([]);
         }
     });
 

@@ -25,12 +25,14 @@ export default function Genres() {
     const deleteMutation = useMutation(deleteGenres, {
         onSuccess: () => {
             queryClient.invalidateQueries('genres');
+            setSelectedIds([]);
         }
     });
 
     const updateMutation = useMutation(putGenres, {
         onSuccess: () => {
             queryClient.invalidateQueries('genres');
+            setSelectedIds([]);
         }
     });
 
