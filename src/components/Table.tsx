@@ -47,33 +47,39 @@ export default function Table<T extends Identifiable>({columns, data, setData, c
                             />
                         </td>
                         {
-                            Object.entries(entry).slice(1).map(([key,value], index: number) => (
-                                <td key={index}>
-                                    {selectedIds.includes(entry.id as number) ? (
-                                        <input
-                                            type="text"
-                                            value={value}
-                                            onChange={(e) => handleInputChange(e.target.value, key, entry.id as number)}
-                                        />
-                                    ) : (
-                                        value
-                                )}
-                                </td>
+                            Object.entries(entry)
+                                .slice(1)
+                                .map(([key,value], index: number) => (
+                                    <td key={index}>
+                                        {selectedIds.includes(entry.id as number) ? (
+                                            <input
+                                                type="text"
+                                                value={value}
+                                                onChange={(e) => handleInputChange(e.target.value, key, entry.id as number)}
+                                            />
+                                        ) : (
+                                            value
+                                    )}
+                                    </td>
                             ))
                         }
                     </tr>
                 ))}
                 <tr key={"createRow"}>
                     <td></td>
-                    {columns.slice(1).map((column, index) => (
-                        <td key={index}>
-                            <input
-                                type="text"
-                                value={createData?.[column] || ''}
-                                onChange={(e) => handleCreateInputChange(e.target.value, column)}
-                            />
-                        </td>
-                    ))}
+                    {Object.entries(createData)
+                        .slice(1) //remove id column
+                        .filter(([, value]) => typeof value === 'string' || typeof value === 'number') //filters out objects such as movieJSON or actorJSON
+                        .map(([key, value], index) => (
+                            <td key={index}>
+                                <input
+                                    type="text"
+                                    value={value}
+                                    onChange={(e) => handleCreateInputChange(e.target.value, key)}
+                                />
+                            </td>
+                        ))
+                    }
                 </tr>
 
                 </tbody>
