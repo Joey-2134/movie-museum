@@ -26,7 +26,9 @@ export default function Directors() {
 
     const deleteMutation = useMutation(deleteDirectors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('directors');
+            selectedIds.forEach((id) => {
+                setData(data.filter((director) => director.id !== id));
+            });
             setSelectedIds([]);
         }
     });

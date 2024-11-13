@@ -26,7 +26,9 @@ export default function Actors() {
 
     const deleteMutation = useMutation(deleteActors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('actors');
+            selectedIds.forEach((id) => {
+                setData(data.filter((actor) => actor.id !== id));
+            });
             setSelectedIds([]);
         }
     });
@@ -46,7 +48,6 @@ export default function Actors() {
 
     const handleDelete = (selectedIds: number[]) => {
         if (!selectedIds) return;
-
         deleteMutation.mutate(selectedIds);
     };
 

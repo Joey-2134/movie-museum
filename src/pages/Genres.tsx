@@ -31,7 +31,9 @@ export default function Genres() {
 
     const updateMutation = useMutation(putGenres, {
         onSuccess: () => {
-            queryClient.invalidateQueries('genres');
+            selectedIds.forEach((id) => {
+                setData(data.filter((genre) => genre.id !== id));
+            });
             setSelectedIds([]);
         }
     });

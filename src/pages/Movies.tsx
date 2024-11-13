@@ -33,9 +33,12 @@ export default function Movies() {
     });
 
     const deleteMutation = useMutation(deleteMovies, {
-       onSuccess: () => {
-           queryClient.invalidateQueries('movies');
-       }
+        onSuccess: () => {
+            selectedIds.forEach((id) => {
+                setData(data.filter((movie) => movie.id !== id));
+            });
+            setSelectedIds([]);
+        }
     });
 
     const updateMutation = useMutation(putMovies, {
