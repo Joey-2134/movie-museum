@@ -37,8 +37,8 @@ export default function Genres() {
     });
 
     const submitMutation = useMutation(postGenre, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('genres');
+        onSuccess: (newGenre) => {
+            setData(prevState => [...prevState, newGenre]); // instead of invalidating the query, we add the new genre to the data
         }
     });
 

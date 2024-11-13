@@ -38,6 +38,12 @@ export default function Directors() {
         }
     });
 
+    const submitMutation = useMutation(postDirector, {
+        onSuccess: (newDirector) => {
+            setData(prevState => [...prevState, newDirector]); // instead of invalidating the query, we add the new director to the data
+        }
+    });
+
     const handleDelete = (selectedIds: number[]) => {
         if (!selectedIds) return;
 
@@ -53,12 +59,6 @@ export default function Directors() {
         updateMutation.mutate(directorsToUpdate);
         setSelectedIds([]);
     };
-
-    const submitMutation = useMutation(postDirector, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('directors');
-        }
-    });
 
     const handleSubmit = (createData: DirectorJSON) => {
         if (!createData) return;

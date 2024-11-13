@@ -39,8 +39,8 @@ export default function Actors() {
     });
 
     const submitMutation = useMutation(postActor, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('actors');
+        onSuccess: (newActor) => {
+            setData(prevState => [...prevState, newActor]); // instead of invalidating the query, we add the new actor to the data
         }
     });
 

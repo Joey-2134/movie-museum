@@ -45,8 +45,8 @@ export default function Movies() {
     });
 
     const submitMutation = useMutation(postMovie, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('movies');
+        onSuccess: (newMovie) => {
+            setData(prevState => [...prevState, newMovie]); // instead of invalidating the query, we add the new movie to the data
         }
     });
 
