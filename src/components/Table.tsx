@@ -84,9 +84,11 @@ export default function Table<T extends Identifiable>({columns, data, setData, c
 
                 </tbody>
             </table>
-            <button onClick={onDelete}>Delete</button>
-            <button onClick={onUpdate}>Update</button>
-            <button onClick={onSubmit}>Submit</button>
+            <div id={"buttonRow"}>
+                <button className={"tableButton"} onClick={onDelete}>Delete</button>
+                <button className={"tableButton"} onClick={onUpdate}>Update</button>
+                <button className={"tableButton"} onClick={onSubmit}>Submit</button>
+            </div>
         </>
     )
 
