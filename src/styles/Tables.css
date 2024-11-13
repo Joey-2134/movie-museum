@@ -30,7 +30,6 @@ html,body {
 }
 
 table {
-    width: 40vw;
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -60,4 +59,29 @@ table tr:first-child th:first-child {
 /* top-right border-radius */
 table tr:first-child th:last-child {
     border-top-right-radius: 6px;
+}
+
+table td:first-child {
+    width: 30px;
+    table-layout: fixed;
+}
+
+#buttonRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    border: 1px solid #bbb;
+}
+
+.tableButton{
+    background: #F48C06;
+    margin: 1em;
+    box-shadow: 0 4px 8px 0 rgba(99, 99, 99, 0.2), 0 6px 20px 0 rgba(192, 190, 190, 0.19);
+    text-shadow: #676565 1px 0 10px;
+}
+
+.tableButton:hover {
+    background: #E85D04;
+    border-color: #E85D04;
 }
