@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {DirectorJSON} from "../types/types.ts";
 import {deleteDirectors, fetchDirectors, postDirector, putDirectors} from "../api/directorRequests.ts";
 
@@ -8,7 +8,6 @@ import {useState} from "react";
 
 export default function Directors() {
 
-    const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<DirectorJSON[]>([]);
     const [createData, setCreateData] = useState<DirectorJSON>(
@@ -35,7 +34,6 @@ export default function Directors() {
 
     const updateMutation = useMutation(putDirectors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('directors');
             setSelectedIds([]);
         }
     });

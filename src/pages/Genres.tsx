@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {GenreJSON} from "../types/types.ts";
 import {deleteGenres, fetchGenres, postGenre, putGenres} from "../api/genreRequests.ts";
 
@@ -8,7 +8,6 @@ import {useState} from "react";
 
 export default function Genres() {
 
-    const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<GenreJSON[]>([]);
     const [createData, setCreateData] = useState<GenreJSON>({
@@ -24,16 +23,15 @@ export default function Genres() {
 
     const deleteMutation = useMutation(deleteGenres, {
         onSuccess: () => {
-            queryClient.invalidateQueries('genres');
+            selectedIds.forEach((id) => {
+                setData(data.filter((genre) => genre.id !== id));
+            });
             setSelectedIds([]);
         }
     });
 
     const updateMutation = useMutation(putGenres, {
         onSuccess: () => {
-            selectedIds.forEach((id) => {
-                setData(data.filter((genre) => genre.id !== id));
-            });
             setSelectedIds([]);
         }
     });

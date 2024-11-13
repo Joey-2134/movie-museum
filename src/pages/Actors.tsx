@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {ActorJSON} from "../types/types.ts";
 import {deleteActors, fetchActors, postActor, putActors} from "../api/actorRequests.ts";
 
@@ -8,7 +8,6 @@ import {useState} from "react";
 
 export default function Actors() {
 
-    const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<ActorJSON[]>([]);
     const [createData, setCreateData] = useState<ActorJSON>(
@@ -35,7 +34,6 @@ export default function Actors() {
 
     const updateMutation = useMutation(putActors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('actors');
             setSelectedIds([]);
         }
     });
