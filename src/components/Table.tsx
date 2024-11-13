@@ -1,4 +1,5 @@
 import {Identifiable, TableProps} from "../types/types.ts";
+import {isStringOrNumber} from "../utils/helperFunctions.ts";
 
 export default function Table<T extends Identifiable>({columns, data, setData, createData, setCreateData, setSelectedIds, selectedIds = [], onDelete, onUpdate, onSubmit}: TableProps<T>) {
 
@@ -67,9 +68,9 @@ export default function Table<T extends Identifiable>({columns, data, setData, c
                 ))}
                 <tr key={"createRow"}>
                     <td></td>
-                    {Object.entries(createData)
+                    {Object.entries(createData ?? {})
                         .slice(1) //remove id column
-                        .filter(([, value]) => typeof value === 'string' || typeof value === 'number') //filters out objects such as movieJSON or actorJSON
+                        .filter(([, value]) => isStringOrNumber(value)) //filters out objects such as movieJSON or actorJSON
                         .map(([key, value], index) => (
                             <td key={index}>
                                 <input

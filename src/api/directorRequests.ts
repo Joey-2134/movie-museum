@@ -9,7 +9,7 @@ export const fetchDirectors = async (): Promise<DirectorJSON[]> => {
 }
 
 export const postDirector = async (director: DirectorJSON): Promise<DirectorJSON> => {
-    const url = `${API_BASE_URL}` + "directors";
+    const url = `${API_BASE_URL}` + "director/post";
     const response = await axios.post(url, director);
     return response.data;
 }

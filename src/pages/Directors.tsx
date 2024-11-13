@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {DirectorJSON} from "../types/types.ts";
 import {deleteDirectors, fetchDirectors, postDirector, putDirectors} from "../api/directorRequests.ts";
 
@@ -8,7 +8,6 @@ import {useState} from "react";
 
 export default function Directors() {
 
-    const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<DirectorJSON[]>([]);
     const [createData, setCreateData] = useState<DirectorJSON>(
@@ -26,15 +25,22 @@ export default function Directors() {
 
     const deleteMutation = useMutation(deleteDirectors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('directors');
+            selectedIds.forEach((id) => {
+                setData(data.filter((director) => director.id !== id));
+            });
             setSelectedIds([]);
         }
     });
 
     const updateMutation = useMutation(putDirectors, {
         onSuccess: () => {
-            queryClient.invalidateQueries('directors');
             setSelectedIds([]);
+        }
+    });
+
+    const submitMutation = useMutation(postDirector, {
+        onSuccess: (newDirector) => {
+            setData(prevState => [...prevState, newDirector]); // instead of invalidating the query, we add the new director to the data
         }
     });
 
@@ -53,12 +59,6 @@ export default function Directors() {
         updateMutation.mutate(directorsToUpdate);
         setSelectedIds([]);
     };
-
-    const submitMutation = useMutation(postDirector, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('directors');
-        }
-    });
 
     const handleSubmit = (createData: DirectorJSON) => {
         if (!createData) return;

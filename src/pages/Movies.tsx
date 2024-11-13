@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {MovieJSON} from "../types/types.ts";
 import {deleteMovies, fetchMovies, postMovie, putMovies} from "../api/movieRequests.ts";
 
@@ -8,7 +8,6 @@ import {useState} from "react";
 
 export default function Movies() {
 
-    const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [data, setData] = useState<MovieJSON[]>([]);
     const [createData, setCreateData] = useState<MovieJSON>({
@@ -33,20 +32,23 @@ export default function Movies() {
     });
 
     const deleteMutation = useMutation(deleteMovies, {
-       onSuccess: () => {
-           queryClient.invalidateQueries('movies');
-       }
+        onSuccess: () => {
+            selectedIds.forEach((id) => {
+                setData(data.filter((movie) => movie.id !== id));
+            });
+            setSelectedIds([]);
+        }
     });
 
     const updateMutation = useMutation(putMovies, {
         onSuccess: () => {
-            queryClient.invalidateQueries('movies');
+            setSelectedIds([]);
         }
     });
 
     const submitMutation = useMutation(postMovie, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('movies');
+        onSuccess: (newMovie) => {
+            setData(prevState => [...prevState, newMovie]); // instead of invalidating the query, we add the new movie to the data
         }
     });
 
